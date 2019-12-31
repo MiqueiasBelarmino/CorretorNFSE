@@ -315,7 +315,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n------------------------- Verificar Nota Interna -------------------------");
             popularNFSE();
             txtAreaResultados.setText(txtAreaResultados.getText() + "\nEmpresa: " + comboEmpresa.getSelectedItem() + " | Nota Interna: " + txtNotaInterna.getText());
-            res = NFSEDao.checkNFSe(nfse.getNumeroInterno(), nfse.getCodigoEmpresa());
+            res = NFSEDao.verificar(nfse.getNumeroInterno(), nfse.getCodigoEmpresa());
 
             if ("null".equals(res)) {
                 JOptionPane.showMessageDialog(null, "Nota não consta no banco de dados");
@@ -359,7 +359,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
                     txtAreaResultados.setText(txtAreaResultados.getText() + "\nNão foi possível mover o arquivo");
                 }
                 try {
-                    NFSEDao.executeCorrection(nfse, valor);
+                    NFSEDao.corrigir(nfse, valor);
                     txtAreaResultados.setText(txtAreaResultados.getText() + "\nCorreção efetuada com sucesso");
                 } catch (Exception e) {
                     txtAreaResultados.setText(txtAreaResultados.getText() + "\nFalha na correção");
@@ -384,7 +384,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
         } else {
             int interno = Integer.parseInt(valor);
             nfse = new NFSE();
-            nfse = NFSEDao.findNFSe(interno, (comboEmpresa.getSelectedIndex() + 1));
+            nfse = NFSEDao.localizar(interno, (comboEmpresa.getSelectedIndex() + 1));
             txtCodigoCliente.setText("" + nfse.getClienteCodigo());
             txtNotaExterna.setText("" + nfse.getNumeroExterno());
             txtNotaInterna.setText("" + nfse.getNumeroInterno());

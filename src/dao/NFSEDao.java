@@ -14,7 +14,7 @@ import util.Conexao;
  */
 public class NFSEDao {
 
-    public static String checkNFSe(int numeroInterno, int codigoEmpresa) {
+    public static String verificar(int numeroInterno, int codigoEmpresa) {
 
         Connection connection = Conexao.getConnection();
         String sql = "Select NF_NumeroNFEletronica from NotasFiscais where NF_Numero = '" + numeroInterno + "' and Emp_Codigo = " + codigoEmpresa;
@@ -60,7 +60,7 @@ public class NFSEDao {
         return retorno;
     }
 
-    public static NFSE findNFSe(int numeroInterno, int codigoEmpresa) {
+    public static NFSE localizar(int numeroInterno, int codigoEmpresa) {
         Connection connection = Conexao.getConnection();
         String sql = "Select * from NotasFiscais where NF_Numero = '" + numeroInterno + "' and Emp_Codigo = " + codigoEmpresa;
         PreparedStatement pstm = null;
@@ -101,7 +101,7 @@ public class NFSEDao {
         return nfse;
     }
 
-    public static void executeCorrection(NFSE nfse, int notaExterna) {
+    public static void corrigir(NFSE nfse, int notaExterna) {
         Connection connection = Conexao.getConnection();
         try {
             connection.setAutoCommit(false);
