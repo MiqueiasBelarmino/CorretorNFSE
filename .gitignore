@@ -45,6 +45,7 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 src/util/Conexao.Java
+src/util/*
 
 
 # OS
