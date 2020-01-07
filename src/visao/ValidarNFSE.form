@@ -196,9 +196,10 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnCorrigir" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="labelXML" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelXMLOrigem" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelXMLDestino" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="64" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -212,8 +213,10 @@
                       <Component id="btnXML" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="labelXML" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelXMLOrigem" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="labelXMLDestino" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -258,9 +261,14 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXMLActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="labelXML">
+        <Component class="javax.swing.JLabel" name="labelXMLOrigem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="XML:"/>
+            <Property name="text" type="java.lang.String" value="XML Origem:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelXMLDestino">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="XML Destino:"/>
           </Properties>
         </Component>
       </SubComponents>

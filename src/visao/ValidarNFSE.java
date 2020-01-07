@@ -27,7 +27,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
     public ValidarNFSE() {
         initComponents();
 
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/imagens/logo.png")));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/img/logo.png")));
         Conexao.db_host = "OX_SERVIDOR";//define o host de conexão uma vez que não há implementação de escolha dinamica
         txtNotaInterna.requestFocus();//define o foco no campo Nota Interna
         txtAreaResultados.setText("Conectado com sucesso. Host: " + Conexao.getHost());
@@ -55,7 +55,8 @@ public class ValidarNFSE extends javax.swing.JFrame {
         btnCorrigir = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnXML = new javax.swing.JButton();
-        labelXML = new javax.swing.JLabel();
+        labelXMLOrigem = new javax.swing.JLabel();
+        labelXMLDestino = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaResultados = new javax.swing.JTextArea();
@@ -198,7 +199,9 @@ public class ValidarNFSE extends javax.swing.JFrame {
             }
         });
 
-        labelXML.setText("XML:");
+        labelXMLOrigem.setText("XML Origem:");
+
+        labelXMLDestino.setText("XML Destino:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -215,8 +218,9 @@ public class ValidarNFSE extends javax.swing.JFrame {
                         .addComponent(btnXML)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCorrigir))
-                    .addComponent(labelXML))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(labelXMLOrigem)
+                    .addComponent(labelXMLDestino))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,7 +231,9 @@ public class ValidarNFSE extends javax.swing.JFrame {
                     .addComponent(btnCorrigir, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnXML, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelXML)
+                .addComponent(labelXMLOrigem)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelXMLDestino)
                 .addContainerGap())
         );
 
@@ -339,36 +345,13 @@ public class ValidarNFSE extends javax.swing.JFrame {
 
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n---------------------------------- Corrigir Nota ----------------------------------");
             try {
-                File origem = new File(arquivo.getSelectedFile().getAbsolutePath());
-                File dir = null;
-                switch (comboEmpresa.getSelectedItem().toString()) {
-                    case "OXETIL": {
-                        dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\74554189000109\\NFSE");
-                    }
-                    case "MAC": {
-                        dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\01651135000180\\NFSE");
-                    }
-                }
-
-                // move o arquivo para o novo diretorio
-                boolean ok = origem.renameTo(new File(dir, "" + txtNotaExterna.getText().trim() + "2-nfse.xml"));
-                if (ok) {
-                    txtAreaResultados.setText(txtAreaResultados.getText() + "\nArquivo foi movido com sucesso");
-                } else {
-                    System.out.println("");
-                    txtAreaResultados.setText(txtAreaResultados.getText() + "\nNão foi possível mover o arquivo");
-                }
-                try {
-                    NFSEDao.corrigir(nfse, valor);
-                    txtAreaResultados.setText(txtAreaResultados.getText() + "\nCorreção efetuada com sucesso");
-                } catch (Exception e) {
-                    txtAreaResultados.setText(txtAreaResultados.getText() + "\nFalha na correção");
-                }
-                txtNotaExterna.setEnabled(false);
-                btnCorrigir.setEnabled(false);
+                NFSEDao.corrigir(nfse, valor);
+                txtAreaResultados.setText(txtAreaResultados.getText() + "\nCorreção efetuada com sucesso");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Erro ao mover arquivo XML.\nEntre em contato com o Departamento de TI.\n" + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                txtAreaResultados.setText(txtAreaResultados.getText() + "\nFalha na correção");
             }
+            txtNotaExterna.setEnabled(false);
+            btnCorrigir.setEnabled(false);
 
         }
     }//GEN-LAST:event_btnCorrigirActionPerformed
@@ -403,10 +386,34 @@ public class ValidarNFSE extends javax.swing.JFrame {
         arquivo.setAcceptAllFileFilterUsed(false);
 
         if (arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            labelXML.setText("XML: " + arquivo.getSelectedFile().getAbsolutePath());
+            labelXMLOrigem.setText("XML Origem: " + arquivo.getSelectedFile().getAbsolutePath());
+            labelXMLDestino.setText("XML Destino: "+txtNotaExterna.getText().trim() + "2-nfse.xml");
             btnCorrigir.setEnabled(true);
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n------------------------------------- Buscar XML -------------------------------------");
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n" + arquivo.getSelectedFile().getAbsolutePath());
+            try {
+                File origem = new File(arquivo.getSelectedFile().getAbsolutePath());
+                File dir = null;
+                switch (comboEmpresa.getSelectedItem().toString()) {
+                    case "OXETIL": {
+                        dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\74554189000109\\NFSE\\");
+                    }
+                    case "MAC": {
+                        dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\01651135000180\\NFSE\\");
+                    }
+                }
+
+                // move o arquivo para o novo diretorio
+                boolean ok = origem.renameTo(new File(dir,txtNotaExterna.getText().trim() + "2-nfse.xml"));
+                if (ok) {
+                    txtAreaResultados.setText(txtAreaResultados.getText() + "\nArquivo foi movido com sucesso");
+                } else {
+                    System.out.println("");
+                    txtAreaResultados.setText(txtAreaResultados.getText() + "\nNão foi possível mover o arquivo");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro ao mover arquivo XML.\nEntre em contato com o Departamento de TI.\n" + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+            }
 
         }
     }//GEN-LAST:event_btnXMLActionPerformed
@@ -521,7 +528,8 @@ public class ValidarNFSE extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelXML;
+    private javax.swing.JLabel labelXMLDestino;
+    private javax.swing.JLabel labelXMLOrigem;
     private javax.swing.JTextArea txtAreaResultados;
     private javax.swing.JTextField txtCodigoCliente;
     private javax.swing.JTextField txtNotaExterna;
