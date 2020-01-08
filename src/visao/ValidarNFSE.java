@@ -387,7 +387,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
 
         if (arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             labelXMLOrigem.setText("XML Origem: " + arquivo.getSelectedFile().getAbsolutePath());
-            labelXMLDestino.setText("XML Destino: "+txtNotaExterna.getText().trim() + "2-nfse.xml");
+            labelXMLDestino.setText("XML Destino: " + txtNotaExterna.getText().trim() + "2-nfse.xml");
             btnCorrigir.setEnabled(true);
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n------------------------------------- Buscar XML -------------------------------------");
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n" + arquivo.getSelectedFile().getAbsolutePath());
@@ -397,14 +397,16 @@ public class ValidarNFSE extends javax.swing.JFrame {
                 switch (comboEmpresa.getSelectedItem().toString()) {
                     case "OXETIL": {
                         dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\74554189000109\\NFSE\\");
+                        break;
                     }
                     case "MAC": {
                         dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\01651135000180\\NFSE\\");
+                        break;
                     }
                 }
 
                 // move o arquivo para o novo diretorio
-                boolean ok = origem.renameTo(new File(dir,txtNotaExterna.getText().trim() + "2-nfse.xml"));
+                boolean ok = origem.renameTo(new File(dir, txtNotaExterna.getText().trim() + "2-nfse.xml"));
                 if (ok) {
                     txtAreaResultados.setText(txtAreaResultados.getText() + "\nArquivo foi movido com sucesso");
                 } else {
