@@ -26,12 +26,13 @@ public class ValidarNFSE extends javax.swing.JFrame {
 
     public ValidarNFSE() {
         initComponents();
-
+        //define o ícone da aplicação
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/img/logo.png")));
-        Conexao.db_host = "OX_SERVIDOR";//define o host de conexão uma vez que não há implementação de escolha dinamica
-        txtNotaInterna.requestFocus();//define o foco no campo Nota Interna
-        txtAreaResultados.setText("Conectado com sucesso. Host: " + Conexao.getHost());
+        //define o foco no campo Nota Interna
+        txtNotaInterna.requestFocus();
+        //desabilita a edição do campo nota externa
         txtNotaExterna.setEnabled(false);
+        //desabilita o botão corrigir
         btnCorrigir.setEnabled(false);
     }
 
@@ -64,11 +65,6 @@ public class ValidarNFSE extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Validador de Nota Fiscal de Serviço - Oxetil");
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados"));
 
@@ -181,11 +177,6 @@ public class ValidarNFSE extends javax.swing.JFrame {
                 btnBuscarActionPerformed(evt);
             }
         });
-        btnBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnBuscarKeyPressed(evt);
-            }
-        });
 
         btnXML.setText("Buscar XML");
         btnXML.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -290,10 +281,6 @@ public class ValidarNFSE extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtNotaExternaKeyPressed
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-
-    }//GEN-LAST:event_formWindowClosing
-
     private void txtCodigoClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoClienteKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {//verificação de tecla para mudar foco para próximo campo com o enter
             txtNotaInterna.requestFocus();
@@ -315,22 +302,28 @@ public class ValidarNFSE extends javax.swing.JFrame {
     private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
         txtNotaExterna.setText("");
         String res = "";
+        //verifica se tem campos preenchidos ou não
         if (vazio()) {
-            JOptionPane.showMessageDialog(null, "Nº da Nota Interna é obrigatório");
+            JOptionPane.showMessageDialog(this, "Nº da Nota Interna é obrigatório");
         } else {
+            //adiciona a ação na Área de texto
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n------------------------- Verificar Nota Interna -------------------------");
+            //carrega as informações digitadas nos campos na instância nfse
             popularNFSE();
+            //adiciona resultado da ação na Área de texto
             txtAreaResultados.setText(txtAreaResultados.getText() + "\nEmpresa: " + comboEmpresa.getSelectedItem() + " | Nota Interna: " + txtNotaInterna.getText());
             res = NFSEDao.verificar(nfse.getNumeroInterno(), nfse.getCodigoEmpresa());
 
             if ("null".equals(res)) {
-                JOptionPane.showMessageDialog(null, "Nota não consta no banco de dados");
+                JOptionPane.showMessageDialog(this, "Nota não consta no banco de dados");
+                //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nNota não consta no banco de dados");
                 txtNotaExterna.setEnabled(true);
                 btnBuscar.setEnabled(true);
                 txtNotaExterna.requestFocus();
             } else {
-                JOptionPane.showMessageDialog(null, "Nota já consta no banco de dados");
+                JOptionPane.showMessageDialog(this, "Nota já consta no banco de dados");
+                //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nNota já consta no banco de dados");
             }
         }
@@ -340,14 +333,16 @@ public class ValidarNFSE extends javax.swing.JFrame {
         String nota = txtNotaExterna.getText().trim();
         int valor = Integer.parseInt(nota);
         if (nota.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Informe o Nº da nota externa");
+            JOptionPane.showMessageDialog(this, "Informe o Nº da nota externa");
         } else {
-
+            //adiciona a ação na Área de texto
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n---------------------------------- Corrigir Nota ----------------------------------");
             try {
                 NFSEDao.corrigir(nfse, valor);
+                //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nCorreção efetuada com sucesso");
             } catch (Exception e) {
+                //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nFalha na correção");
             }
             txtNotaExterna.setEnabled(false);
@@ -363,7 +358,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String valor = txtNotaInterna.getText().trim();
         if (valor.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Nº da Nota Interna obrigatório");
+            JOptionPane.showMessageDialog(this, "Nº da Nota Interna obrigatório");
         } else {
             int interno = Integer.parseInt(valor);
             nfse = new NFSE();
@@ -375,48 +370,50 @@ public class ValidarNFSE extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void btnBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnBuscarKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarKeyPressed
-
     private void btnXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXMLActionPerformed
-        arquivo = new JFileChooser("C:\\Users\\Rafael\\Downloads");//cria um seletor de arquivo
-        FileNameExtensionFilter filtroPDF = new FileNameExtensionFilter("Arquivos XML", "xml");//cria um filtro de extenção e define apenas xml
-        arquivo.addChoosableFileFilter(filtroPDF);
-        arquivo.setAcceptAllFileFilterUsed(false);
+        if (txtNotaExterna.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Informe o Nº da Nota Externa");
+        } else {
+            arquivo = new JFileChooser("C:\\Users\\Rafael\\Downloads");//cria um seletor de arquivo
+            FileNameExtensionFilter filtroPDF = new FileNameExtensionFilter("Arquivos XML", "xml");//cria um filtro de extenção e define apenas xml
+            arquivo.addChoosableFileFilter(filtroPDF);
+            arquivo.setAcceptAllFileFilterUsed(false);
 
-        if (arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            labelXMLOrigem.setText("XML Origem: " + arquivo.getSelectedFile().getAbsolutePath());
-            labelXMLDestino.setText("XML Destino: " + txtNotaExterna.getText().trim() + "2-nfse.xml");
-            btnCorrigir.setEnabled(true);
-            txtAreaResultados.setText(txtAreaResultados.getText() + "\n------------------------------------- Buscar XML -------------------------------------");
-            txtAreaResultados.setText(txtAreaResultados.getText() + "\n" + arquivo.getSelectedFile().getAbsolutePath());
-            try {
-                File origem = new File(arquivo.getSelectedFile().getAbsolutePath());
-                File dir = null;
-                switch (comboEmpresa.getSelectedItem().toString()) {
-                    case "OXETIL": {
-                        dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\74554189000109\\NFSE\\");
-                        break;
+            if (arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                labelXMLOrigem.setText("XML Origem: " + arquivo.getSelectedFile().getAbsolutePath());
+                labelXMLDestino.setText("XML Destino: " + txtNotaExterna.getText().trim() + "2-nfse.xml");
+                btnCorrigir.setEnabled(true);
+                //adiciona a ação na Área de texto
+                txtAreaResultados.setText(txtAreaResultados.getText()
+                        + "\n------------------------------------- Buscar XML -------------------------------------"
+                        + "\n" + arquivo.getSelectedFile().getAbsolutePath());
+                try {
+                    File origem = new File(arquivo.getSelectedFile().getAbsolutePath());
+                    File dir = null;
+                    switch (comboEmpresa.getSelectedItem().toString()) {
+                        case "OXETIL": {
+                            dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\74554189000109\\NFSE\\");
+                            break;
+                        }
+                        case "MAC": {
+                            dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\01651135000180\\NFSE\\");
+                            break;
+                        }
                     }
-                    case "MAC": {
-                        dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\01651135000180\\NFSE\\");
-                        break;
+
+                    // move o arquivo para o novo diretorio
+                    boolean ok = origem.renameTo(new File(dir, txtNotaExterna.getText().trim() + "2-nfse.xml"));
+                    //verifica se o arquivo foi movido e adiciona resultado da ação na Área de texto
+                    if (ok) {
+                        txtAreaResultados.setText(txtAreaResultados.getText() + "\nArquivo foi movido com sucesso");
+                    } else {
+                        txtAreaResultados.setText(txtAreaResultados.getText() + "\nNão foi possível mover o arquivo");
                     }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Erro ao mover arquivo XML.\nEntre em contato com o Departamento de TI.\n" + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                 }
 
-                // move o arquivo para o novo diretorio
-                boolean ok = origem.renameTo(new File(dir, txtNotaExterna.getText().trim() + "2-nfse.xml"));
-                if (ok) {
-                    txtAreaResultados.setText(txtAreaResultados.getText() + "\nArquivo foi movido com sucesso");
-                } else {
-                    System.out.println("");
-                    txtAreaResultados.setText(txtAreaResultados.getText() + "\nNão foi possível mover o arquivo");
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Erro ao mover arquivo XML.\nEntre em contato com o Departamento de TI.\n" + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
             }
-
         }
     }//GEN-LAST:event_btnXMLActionPerformed
 
