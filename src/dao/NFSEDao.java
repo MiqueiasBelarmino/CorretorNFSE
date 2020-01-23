@@ -24,7 +24,7 @@ public class NFSEDao {
         //estabelece conexão com o banco de dados
         Connection connection = Conexao.getConnection();
         String sql = "Select NF_NumeroNFEletronica from NotasFiscais where NF_Numero = '" + numeroInterno + "' and Emp_Codigo = " + codigoEmpresa;
-        String retorno = "";
+        String retorno = "null";
         PreparedStatement pstm = null;
 
         ResultSet rset = null;

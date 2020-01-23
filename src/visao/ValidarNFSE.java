@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.NFSE;
-import util.Conexao;
 
 /**
  *
@@ -275,33 +274,38 @@ public class ValidarNFSE extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNotaExternaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNotaExternaKeyPressed
-        txtNotaExterna.setEditable(numberInputVerifier(txtNotaExterna, evt));//validação para aceitar digitação apenas de numeros
+        //validação para aceitar digitação apenas de numeros
+        txtNotaExterna.setEditable(numberInputVerifier(txtNotaExterna, evt));
+        //verificação de tecla para mudar foco para próximo campo com o enter
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnVerificar.requestFocus();
         }
     }//GEN-LAST:event_txtNotaExternaKeyPressed
 
     private void txtCodigoClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoClienteKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {//verificação de tecla para mudar foco para próximo campo com o enter
+        //verificação de tecla para mudar foco para próximo campo com o enter
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             txtNotaInterna.requestFocus();
         }
     }//GEN-LAST:event_txtCodigoClienteKeyPressed
 
     private void txtNotaInternaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNotaInternaKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {//verificação de tecla para mudar foco para próximo campo com o enter
+        //verificação de tecla para mudar foco para próximo campo com o enter
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             txtNotaExterna.requestFocus();
         }
     }//GEN-LAST:event_txtNotaInternaKeyPressed
 
     private void btnVerificarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnVerificarKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {//verificação de tecla para acionar Ação do botão "btnVerificar"
+        //verificação de tecla para acionar Ação do botão "btnVerificar"
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnVerificarActionPerformed(null);
         }
     }//GEN-LAST:event_btnVerificarKeyPressed
 
     private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
         txtNotaExterna.setText("");
-        String res = "";
+        String res = "null";
         //verifica se tem campos preenchidos ou não
         if (vazio()) {
             JOptionPane.showMessageDialog(this, "Nº da Nota Interna é obrigatório");
@@ -371,6 +375,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXMLActionPerformed
+        //verifica se o numero externo da nota foi informado
         if (txtNotaExterna.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Informe o Nº da Nota Externa");
         } else {
@@ -378,18 +383,23 @@ public class ValidarNFSE extends javax.swing.JFrame {
             FileNameExtensionFilter filtroPDF = new FileNameExtensionFilter("Arquivos XML", "xml");//cria um filtro de extenção e define apenas xml
             arquivo.addChoosableFileFilter(filtroPDF);
             arquivo.setAcceptAllFileFilterUsed(false);
-
+            
+            //se um arquivo foi selecionado
             if (arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                //mostra a origem e o destino
                 labelXMLOrigem.setText("XML Origem: " + arquivo.getSelectedFile().getAbsolutePath());
                 labelXMLDestino.setText("XML Destino: " + txtNotaExterna.getText().trim() + "2-nfse.xml");
+                //habilita o botão de correção
                 btnCorrigir.setEnabled(true);
                 //adiciona a ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText()
                         + "\n------------------------------------- Buscar XML -------------------------------------"
                         + "\n" + arquivo.getSelectedFile().getAbsolutePath());
                 try {
+                    //carrega o arquivo selecionado
                     File origem = new File(arquivo.getSelectedFile().getAbsolutePath());
                     File dir = null;
+                    //define o diretório destino do arquivo selecionado
                     switch (comboEmpresa.getSelectedItem().toString()) {
                         case "OXETIL": {
                             dir = new File("\\\\OX_Servidor\\E\\Nota Fiscal Eletronica NFSE\\74554189000109\\NFSE\\");
@@ -432,13 +442,19 @@ public class ValidarNFSE extends javax.swing.JFrame {
     private void btnCorrigirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCorrigirMouseEntered
         btnCorrigir.setToolTipText("Efetua correção da nota interna");
     }//GEN-LAST:event_btnCorrigirMouseEntered
-
+    
+    /**
+     * <p>Esse método verifica se os campos estão vazios</p>
+     */
     private boolean vazio() {
         return /*txtCodigoCliente.getText().trim().isEmpty() 
                 && */ txtNotaExterna.getText().trim().isEmpty()
                 && txtNotaInterna.getText().trim().isEmpty();
     }
-
+    
+    /**
+     * <p>Esse método carrega as informações dos campos na instância nfse</p>
+     */
     private void popularNFSE() {
 
         String codigoCliente = txtCodigoCliente.getText().trim();
@@ -463,7 +479,13 @@ public class ValidarNFSE extends javax.swing.JFrame {
         }
         nfse.setNumeroExterno(resultado);
     }
-
+    
+    /**
+     * <p>Esse método verifica o que está sendo digitado no componente é número ou teclas específicas para ações</p>
+     * @param j componente que será verificado
+     * @param evt evento de tecla do componente a ser verificado
+     * @return verdadeiro ou falso 
+     */
     private boolean numberInputVerifier(Component j, KeyEvent evt) {
         String value = "";
         JTextField txt;
