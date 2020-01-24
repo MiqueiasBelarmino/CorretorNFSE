@@ -318,7 +318,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
             txtAreaResultados.setText(txtAreaResultados.getText() + "\nEmpresa: " + comboEmpresa.getSelectedItem() + " | Nota Interna: " + txtNotaInterna.getText());
             res = NFSEDao.verificar(nfse.getNumeroInterno(), nfse.getCodigoEmpresa());
 
-            if ("null".equals(res)) {
+            if ("null".equals(res) || "".equals(res)) {
                 JOptionPane.showMessageDialog(this, "Nota não consta no banco de dados");
                 //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nNota não consta no banco de dados");
@@ -457,16 +457,16 @@ public class ValidarNFSE extends javax.swing.JFrame {
      */
     private void popularNFSE() {
 
-        String codigoCliente = txtCodigoCliente.getText().trim();
+        //String codigoCliente = txtCodigoCliente.getText().trim();
         int resultado = 0;
 
         nfse = new NFSE();
         nfse.setCodigoEmpresa(comboEmpresa.getSelectedIndex() + 1);
-        if (!codigoCliente.isEmpty()) {
-            resultado = Integer.parseInt(txtCodigoCliente.getText().trim());
-        }
-        nfse.setClienteCodigo(resultado);
-        resultado = 0;
+//        if (!codigoCliente.isEmpty()) {
+//            resultado = Integer.parseInt(txtCodigoCliente.getText().trim());
+//        }
+//        nfse.setClienteCodigo(resultado);
+//        resultado = 0;
 
         if (!txtNotaInterna.getText().isEmpty()) {
             resultado = Integer.parseInt(txtNotaInterna.getText().trim());
@@ -474,10 +474,10 @@ public class ValidarNFSE extends javax.swing.JFrame {
         nfse.setNumeroInterno(resultado);
         resultado = 0;
 
-        if (!txtNotaExterna.getText().isEmpty()) {
-            resultado = Integer.parseInt(txtNotaExterna.getText().trim());
-        }
-        nfse.setNumeroExterno(resultado);
+//        if (!txtNotaExterna.getText().isEmpty()) {
+//            resultado = Integer.parseInt(txtNotaExterna.getText().trim());
+//        }
+//        nfse.setNumeroExterno(resultado);
     }
     
     /**
