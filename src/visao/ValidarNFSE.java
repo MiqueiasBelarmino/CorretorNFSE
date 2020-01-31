@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.NFSE;
+import util.Conexao;
 
 /**
  *
@@ -27,6 +28,12 @@ public class ValidarNFSE extends javax.swing.JFrame {
         initComponents();
         //define o ícone da aplicação
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/img/logo.png")));
+        
+        if(Conexao.getConnection() == null){
+            txtAreaResultados.setText("Não foi possível estabelecer conexão com o host \""+Conexao.getHost()+"\"");
+        }else{
+            txtAreaResultados.setText("Conexão estabelecida com o host \""+Conexao.getHost()+"\"");
+        }
         //define o foco no campo Nota Interna
         txtNotaInterna.requestFocus();
         //desabilita a edição do campo nota externa
