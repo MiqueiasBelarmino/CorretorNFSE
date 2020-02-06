@@ -1,0 +1,71 @@
+2020-02-06 11:56:39 INFO  ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+2020-02-06 11:56:39 DEBUG ValidarNFSE:49 - This is a Debug
+2020-02-06 11:56:39 INFO  ValidarNFSE:50 - This is an Info
+2020-02-06 11:56:39 WARN  ValidarNFSE:51 - This is a Warn
+2020-02-06 11:56:39 ERROR ValidarNFSE:52 - This is an Error
+2020-02-06 11:56:39 FATAL ValidarNFSE:53 - This is a Fatal
+2020-02-06 12:25:36 INFO  ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+2020-02-06 12:25:48 INFO  ValidarNFSE:381 - Buscar NFSE
+2020-02-06 12:25:49 INFO  ValidarNFSE:326 - Verificar Nota Interna
+2020-02-06 12:25:49 INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696969
+2020-02-06 12:25:51 INFO  ValidarNFSE:338 - Nota não consta no banco de dados
+[2020-02-06 12:43:36] INFO  ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+[2020-02-06 12:43:46] INFO  ValidarNFSE:381 - Buscar NFSE
+[2020-02-06 12:43:48] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:43:48] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 666666
+[2020-02-06 12:43:51] INFO  ValidarNFSE:338 - Nota não consta no banco de dados
+[2020-02-06 12:48:02] INFO  ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+[2020-02-06 12:48:10] INFO  ValidarNFSE:381 - Buscar NFSE
+[2020-02-06 12:48:11] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:48:11] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696099
+[2020-02-06 12:48:12] INFO  ValidarNFSE:338 - Nota não consta no banco de dados
+[2020-02-06 12:48:54] INFO  ValidarNFSE:398 - Buscar XML
+[2020-02-06 12:48:57] INFO  ValidarNFSE:411 - Arquivo selecionado: C:\Users\Rafael\Downloads\45729.xml
+[2020-02-06 12:48:59] INFO  ValidarNFSE:440 - Arquivo foi movido com sucesso
+[2020-02-06 12:49:01] INFO  ValidarNFSE:359 - Corrigir Nota
+[2020-02-06 12:49:01] INFO  ValidarNFSE:364 - Correção efetuada com sucesso
+[2020-02-06 12:49:12] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:49:12] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696099
+[2020-02-06 12:49:14] INFO  ValidarNFSE:346 - Nota já consta no banco de dados
+[2020-02-06 12:49:20] INFO  ValidarNFSE:381 - Buscar NFSE
+[2020-02-06 12:49:22] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:49:22] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696104
+[2020-02-06 12:49:23] INFO  ValidarNFSE:338 - Nota não consta no banco de dados
+[2020-02-06 12:49:40] INFO  ValidarNFSE:398 - Buscar XML
+[2020-02-06 12:49:42] INFO  ValidarNFSE:411 - Arquivo selecionado: C:\Users\Rafael\Downloads\45733.xml
+[2020-02-06 12:49:42] INFO  ValidarNFSE:440 - Arquivo foi movido com sucesso
+[2020-02-06 12:49:43] INFO  ValidarNFSE:359 - Corrigir Nota
+[2020-02-06 12:49:43] INFO  ValidarNFSE:364 - Correção efetuada com sucesso
+[2020-02-06 12:49:48] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:49:48] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696104
+[2020-02-06 12:49:50] INFO  ValidarNFSE:346 - Nota já consta no banco de dados
+[2020-02-06 12:49:54] INFO  ValidarNFSE:381 - Buscar NFSE
+[2020-02-06 12:49:56] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:49:56] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696105
+[2020-02-06 12:49:57] INFO  ValidarNFSE:338 - Nota não consta no banco de dados
+[2020-02-06 12:50:14] INFO  ValidarNFSE:398 - Buscar XML
+[2020-02-06 12:50:16] INFO  ValidarNFSE:411 - Arquivo selecionado: C:\Users\Rafael\Downloads\45734.xml
+[2020-02-06 12:50:16] INFO  ValidarNFSE:440 - Arquivo foi movido com sucesso
+[2020-02-06 12:50:17] INFO  ValidarNFSE:359 - Corrigir Nota
+[2020-02-06 12:50:17] INFO  ValidarNFSE:364 - Correção efetuada com sucesso
+[2020-02-06 12:50:18] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:50:18] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696105
+[2020-02-06 12:50:19] INFO  ValidarNFSE:346 - Nota já consta no banco de dados
+[2020-02-06 12:50:23] INFO  ValidarNFSE:381 - Buscar NFSE
+[2020-02-06 12:50:24] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:50:24] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696106
+[2020-02-06 12:50:25] INFO  ValidarNFSE:338 - Nota não consta no banco de dados
+[2020-02-06 12:50:39] INFO  ValidarNFSE:398 - Buscar XML
+[2020-02-06 12:50:41] INFO  ValidarNFSE:411 - Arquivo selecionado: C:\Users\Rafael\Downloads\45735.xml
+[2020-02-06 12:50:41] INFO  ValidarNFSE:440 - Arquivo foi movido com sucesso
+[2020-02-06 12:50:42] INFO  ValidarNFSE:359 - Corrigir Nota
+[2020-02-06 12:50:42] INFO  ValidarNFSE:364 - Correção efetuada com sucesso
+[2020-02-06 12:50:43] INFO  ValidarNFSE:326 - Verificar Nota Interna
+[2020-02-06 12:50:43] INFO  ValidarNFSE:331 - Empresa: OXETIL | Nota Interna: 696106
+[2020-02-06 12:50:45] INFO  ValidarNFSE:346 - Nota já consta no banco de dados
+[2020-02-06 12:58:19|INFO ] ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+[2020-02-06 12:58:41|%-5] ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+[2020-02-06 12:59:06| INFO] ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+[2020-02-06 12:59:31|INFO] ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+[2020-02-06 13:34:18|INFO] ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"
+[2020-02-06 13:35:22|INFO] ValidarNFSE:39 - Conexão estabelecida com o host "OX_SERVIDOR"

@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.NFSE;
 import util.Conexao;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,6 +22,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
     /**
      * Creates new form ValidarNFSE
      */
+    private static final Logger log = Logger.getLogger(ValidarNFSE.class);
     private NFSE nfse = null;
     private JFileChooser arquivo;
 
@@ -28,11 +30,13 @@ public class ValidarNFSE extends javax.swing.JFrame {
         initComponents();
         //define o ícone da aplicação
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/img/logo.png")));
-        
-        if(Conexao.getConnection() == null){
-            txtAreaResultados.setText("Não foi possível estabelecer conexão com o host \""+Conexao.getHost()+"\"");
-        }else{
-            txtAreaResultados.setText("Conexão estabelecida com o host \""+Conexao.getHost()+"\"");
+
+        if (Conexao.getConnection() == null) {
+            txtAreaResultados.setText("Não foi possível estabelecer conexão com o host \"" + Conexao.getHost() + "\"");
+            log.error("Não foi possível estabelecer conexão com o host \"" + Conexao.getHost() + "\"");
+        } else {
+            txtAreaResultados.setText("Conexão estabelecida com o host \"" + Conexao.getHost() + "\"");
+            log.info("Conexão estabelecida com o host \"" + Conexao.getHost() + "\"");
         }
         //define o foco no campo Nota Interna
         txtNotaInterna.requestFocus();
@@ -319,16 +323,19 @@ public class ValidarNFSE extends javax.swing.JFrame {
         } else {
             //adiciona a ação na Área de texto
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n------------------------- Verificar Nota Interna -------------------------");
+            log.info("Verificar Nota Interna");
             //carrega as informações digitadas nos campos na instância nfse
             popularNFSE();
             //adiciona resultado da ação na Área de texto
             txtAreaResultados.setText(txtAreaResultados.getText() + "\nEmpresa: " + comboEmpresa.getSelectedItem() + " | Nota Interna: " + txtNotaInterna.getText());
+            log.info("Empresa: " + comboEmpresa.getSelectedItem() + " | Nota Interna: " + txtNotaInterna.getText());
             res = NFSEDao.verificar(nfse.getNumeroInterno(), nfse.getCodigoEmpresa());
 
             if ("null".equals(res) || "".equals(res)) {
                 JOptionPane.showMessageDialog(this, "Nota não consta no banco de dados");
                 //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nNota não consta no banco de dados");
+                log.info("Nota não consta no banco de dados");
                 txtNotaExterna.setEnabled(true);
                 btnBuscar.setEnabled(true);
                 txtNotaExterna.requestFocus();
@@ -336,6 +343,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Nota já consta no banco de dados");
                 //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nNota já consta no banco de dados");
+                log.info("Nota já consta no banco de dados");
             }
         }
     }//GEN-LAST:event_btnVerificarActionPerformed
@@ -348,13 +356,18 @@ public class ValidarNFSE extends javax.swing.JFrame {
         } else {
             //adiciona a ação na Área de texto
             txtAreaResultados.setText(txtAreaResultados.getText() + "\n---------------------------------- Corrigir Nota ----------------------------------");
+            log.info("Corrigir Nota");
             try {
                 NFSEDao.corrigir(nfse, valor);
                 //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nCorreção efetuada com sucesso");
+                log.info("Correção efetuada com sucesso");
+                int input = JOptionPane.showConfirmDialog(null, 
+                "SUCESSO", "SUCESSO", JOptionPane.FRAMEBITS);
             } catch (Exception e) {
                 //adiciona resultado da ação na Área de texto
                 txtAreaResultados.setText(txtAreaResultados.getText() + "\nFalha na correção");
+                log.error("Falha na correção",e);
             }
             txtNotaExterna.setEnabled(false);
             btnCorrigir.setEnabled(false);
@@ -367,6 +380,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCorrigirKeyPressed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        log.info("Buscar NFSE");
         String valor = txtNotaInterna.getText().trim();
         if (valor.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nº da Nota Interna obrigatório");
@@ -383,6 +397,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
 
     private void btnXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXMLActionPerformed
         //verifica se o numero externo da nota foi informado
+        log.info("Buscar XML");
         if (txtNotaExterna.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Informe o Nº da Nota Externa");
         } else {
@@ -390,11 +405,12 @@ public class ValidarNFSE extends javax.swing.JFrame {
             FileNameExtensionFilter filtroPDF = new FileNameExtensionFilter("Arquivos XML", "xml");//cria um filtro de extenção e define apenas xml
             arquivo.addChoosableFileFilter(filtroPDF);
             arquivo.setAcceptAllFileFilterUsed(false);
-            
+
             //se um arquivo foi selecionado
             if (arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 //mostra a origem e o destino
                 labelXMLOrigem.setText("XML Origem: " + arquivo.getSelectedFile().getAbsolutePath());
+                log.info("Arquivo selecionado: "+arquivo.getSelectedFile().getAbsolutePath());
                 labelXMLDestino.setText("XML Destino: " + txtNotaExterna.getText().trim() + "2-nfse.xml");
                 //habilita o botão de correção
                 btnCorrigir.setEnabled(true);
@@ -423,11 +439,14 @@ public class ValidarNFSE extends javax.swing.JFrame {
                     //verifica se o arquivo foi movido e adiciona resultado da ação na Área de texto
                     if (ok) {
                         txtAreaResultados.setText(txtAreaResultados.getText() + "\nArquivo foi movido com sucesso");
+                        log.info("Arquivo foi movido com sucesso");
                     } else {
                         txtAreaResultados.setText(txtAreaResultados.getText() + "\nNão foi possível mover o arquivo");
+                        log.error("Não foi possível mover o arquivo");
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, "Erro ao mover arquivo XML.\nEntre em contato com o Departamento de TI.\n" + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                    log.error("Erro ao mover arquivo XML",e);
                 }
 
             }
@@ -449,18 +468,20 @@ public class ValidarNFSE extends javax.swing.JFrame {
     private void btnCorrigirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCorrigirMouseEntered
         btnCorrigir.setToolTipText("Efetua correção da nota interna");
     }//GEN-LAST:event_btnCorrigirMouseEntered
-    
+
     /**
-     * <p>Esse método verifica se os campos estão vazios</p>
+     * <p>
+     * Esse método verifica se os campos estão vazios</p>
      */
     private boolean vazio() {
         return /*txtCodigoCliente.getText().trim().isEmpty() 
                 && */ txtNotaExterna.getText().trim().isEmpty()
                 && txtNotaInterna.getText().trim().isEmpty();
     }
-    
+
     /**
-     * <p>Esse método carrega as informações dos campos na instância nfse</p>
+     * <p>
+     * Esse método carrega as informações dos campos na instância nfse</p>
      */
     private void popularNFSE() {
 
@@ -486,12 +507,15 @@ public class ValidarNFSE extends javax.swing.JFrame {
 //        }
 //        nfse.setNumeroExterno(resultado);
     }
-    
+
     /**
-     * <p>Esse método verifica o que está sendo digitado no componente é número ou teclas específicas para ações</p>
+     * <p>
+     * Esse método verifica o que está sendo digitado no componente é número ou
+     * teclas específicas para ações</p>
+     *
      * @param j componente que será verificado
      * @param evt evento de tecla do componente a ser verificado
-     * @return verdadeiro ou falso 
+     * @return verdadeiro ou falso
      */
     private boolean numberInputVerifier(Component j, KeyEvent evt) {
         String value = "";
