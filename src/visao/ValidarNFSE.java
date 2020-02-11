@@ -12,6 +12,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.NFSE;
 import util.Conexao;
 import org.apache.log4j.Logger;
+import util.Tools;
 
 /**
  *
@@ -87,6 +88,11 @@ public class ValidarNFSE extends javax.swing.JFrame {
 
         txtNotaExterna.setBorder(javax.swing.BorderFactory.createTitledBorder("Nº Nota Externa*"));
         txtNotaExterna.setEnabled(false);
+        txtNotaExterna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNotaExternaActionPerformed(evt);
+            }
+        });
         txtNotaExterna.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtNotaExternaKeyPressed(evt);
@@ -286,7 +292,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
 
     private void txtNotaExternaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNotaExternaKeyPressed
         //validação para aceitar digitação apenas de numeros
-        txtNotaExterna.setEditable(numberInputVerifier(txtNotaExterna, evt));
+        txtNotaExterna.setEditable(Tools.numberInputVerifier(txtNotaExterna, evt));
         //verificação de tecla para mudar foco para próximo campo com o enter
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnVerificar.requestFocus();
@@ -469,6 +475,10 @@ public class ValidarNFSE extends javax.swing.JFrame {
         btnCorrigir.setToolTipText("Efetua correção da nota interna");
     }//GEN-LAST:event_btnCorrigirMouseEntered
 
+    private void txtNotaExternaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaExternaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNotaExternaActionPerformed
+
     /**
      * <p>
      * Esse método verifica se os campos estão vazios</p>
@@ -517,19 +527,19 @@ public class ValidarNFSE extends javax.swing.JFrame {
      * @param evt evento de tecla do componente a ser verificado
      * @return verdadeiro ou falso
      */
-    private boolean numberInputVerifier(Component j, KeyEvent evt) {
-        String value = "";
-        JTextField txt;
-
-        if ((j instanceof JTextField) || (j instanceof JTextField)) {
-            txt = (JTextField) j;
-            value = txt.getText();
-        }
-
-        return (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9')
-                || (evt.getKeyCode() == KeyEvent.VK_BACK_SPACE)
-                || (evt.getKeyCode() == KeyEvent.VK_DELETE);
-    }
+//    private boolean numberInputVerifier(Component j, KeyEvent evt) {
+//        String value = "";
+//        JTextField txt;
+//
+//        if ((j instanceof JTextField) || (j instanceof JTextField)) {
+//            txt = (JTextField) j;
+//            value = txt.getText();
+//        }
+//
+//        return (evt.getKeyChar() >= '0' && evt.getKeyChar() <= '9')
+//                || (evt.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+//                || (evt.getKeyCode() == KeyEvent.VK_DELETE);
+//    }
 
     /**
      * @param args the command line arguments

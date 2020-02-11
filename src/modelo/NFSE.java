@@ -1,15 +1,20 @@
 package modelo;
 
+import java.lang.reflect.Field;
+
 /**
  *
  * @author Miquéias
  */
 public class NFSE {
 
-    private int numeroInterno;
-    private int numeroExterno;
-    private int clienteCodigo;
-    private int codigoEmpresa;
+    private int numeroInterno = 0;
+    private int numeroExterno = 0;
+    private int clienteCodigo = 0;
+    private int codigoEmpresa = 0;
+    private String containers = null;
+    private String clienteNome = null;
+    private int caixaPapelaoQtd = 0;
 
     public int getNumeroInterno() {
         return numeroInterno;
@@ -58,5 +63,57 @@ public class NFSE {
             this.codigoEmpresa = 1;
         }
     }
-    
+
+    public String getClienteNome() {
+        return clienteNome;
+    }
+
+    public void setClienteNome(String clienteNome) {
+        if (clienteNome.isEmpty()) {
+            this.clienteNome = "Desconhecido";
+        } else {
+            this.clienteNome = clienteNome;
+        }
+    }
+
+    public String getContainers() {
+        return containers;
+    }
+
+    public void setContainers(String containers) {
+        this.containers = containers;
+    }
+
+    public int getCaixaPapelaoQtd() {
+        return caixaPapelaoQtd;
+    }
+
+    public void setCaixaPapelaoQtd(int caixaPapelaoQtd) {
+        if (caixaPapelaoQtd > 0) {
+            this.caixaPapelaoQtd = caixaPapelaoQtd;
+        } else {
+            this.caixaPapelaoQtd = 0;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "NFSE{" + "numeroInterno=" + numeroInterno + ", numeroExterno=" + numeroExterno + ", clienteCodigo=" + clienteCodigo + ", codigoEmpresa=" + codigoEmpresa + ", containers=" + containers + ", clienteNome=" + clienteNome + ", caixaPapelaoQtd=" + caixaPapelaoQtd + '}';
+    }
+
+    public boolean isEmpty() {
+
+        for (Field field : this.getClass().getDeclaredFields()) {
+            try {
+                field.setAccessible(true);
+                if (field.get(this) == null) {
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Exception occured in processing");
+            }
+        }
+        return false;
+    }
+
 }

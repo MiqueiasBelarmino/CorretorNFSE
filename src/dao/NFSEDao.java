@@ -13,9 +13,12 @@ import util.Conexao;
  * @author Miquéias
  */
 public class NFSEDao {
-    
+
     /**
-     * <p>Esse método verifica se a NFSE consta completa na base de dados e se está correta</p>
+     * <p>
+     * Esse método verifica se a NFSE consta completa na base de dados e se está
+     * correta</p>
+     *
      * @param numeroInterno o numero da nota fiscal no sistema interno
      * @param codigoEmpresa o codigo de qual empresa pertence a ser localizada
      * @return o numero externo da nota
@@ -66,10 +69,12 @@ public class NFSEDao {
         }
         return retorno;
     }
-    
+
     /**
-     * <p>Esse método localiza uma NFSe com base nas informações
-     * passadas por parâmetros</p>
+     * <p>
+     * Esse método localiza uma NFSe com base nas informações passadas por
+     * parâmetros</p>
+     *
      * @param numeroInterno o numero da nota fiscal no sistema interno
      * @param codigoEmpresa o codigo de qual empresa pertence a ser localizada
      * @return as informações da NFSE em uma/um instância/objeto NFSE
@@ -91,8 +96,11 @@ public class NFSEDao {
                 nfse.setClienteCodigo(rset.getInt("Pessoa_CodigoCliente"));
                 nfse.setCodigoEmpresa(rset.getInt("Emp_Codigo"));
                 nfse.setNumeroExterno(rset.getInt("NF_NumeroNFEletronica"));
+                nfse.setCaixaPapelaoQtd(rset.getInt("NF_QtdCaixasPapelao"));
+                nfse.setClienteNome(rset.getString("NF_NomeCliente"));
+                nfse.setContainers(rset.getString("NF_Containers"));
+                nfse.setNumeroInterno(numeroInterno);
             }
-            nfse.setNumeroInterno(numeroInterno);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -114,9 +122,11 @@ public class NFSEDao {
         }
         return nfse;
     }
-    
+
     /**
-     * <p>Esse método efetua correção da nfse na base de dados da empresa</p>
+     * <p>
+     * Esse método efetua correção da nfse na base de dados da empresa</p>
+     *
      * @param nfse instância de NFSE contendo todas as informações da nota
      * @param notaExterna o numero da nota fiscal
      */
