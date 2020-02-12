@@ -292,7 +292,7 @@ public class ValidarNFSE extends javax.swing.JFrame {
 
     private void txtNotaExternaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNotaExternaKeyPressed
         //validação para aceitar digitação apenas de numeros
-        txtNotaExterna.setEditable(Tools.numberInputVerifier(txtNotaExterna, evt));
+        txtNotaExterna.setEditable(Tools.numberInputVerifier(txtNotaExterna, evt,null));
         //verificação de tecla para mudar foco para próximo campo com o enter
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             btnVerificar.requestFocus();

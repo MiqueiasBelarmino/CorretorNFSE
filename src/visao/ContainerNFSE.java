@@ -6,6 +6,7 @@
 package visao;
 
 import dao.NFSEDao;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -397,25 +398,24 @@ public class ContainerNFSE extends javax.swing.JDialog {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        //String valor = JOptionPane.showInputDialog(this, "Separe os containers por \"|\"", nfse.getContainers());
-
         JTextField containers = new JTextField();
-        containers.setInputVerifier(Tools.numberInputVerifier(this, java.awt.event.KeyEvent evt));
-        JTextField password = new JPasswordField();
-        Object[] message = {
-            "Username:", containers,
-            "Password:", password
-        };
-
-        int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            if (containers.getText().equals("h") && password.getText().equals("h")) {
-                System.out.println("Login successful");
-            } else {
-                System.out.println("login failed");
+        containers.setText("" + nfse.getContainers());
+        containers.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                containers.setEditable(Tools.numberInputVerifier(containers, e, "|"));
             }
-        } else {
-            System.out.println("Login canceled");
+        });
+
+        int option = JOptionPane.showConfirmDialog(null, containers, "Alteração", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            int lenght = containers.getText().trim().length();
+            String txt = containers.getText().trim();
+            if (lenght > 0) {
+                if(txt.charAt(lenght-1) != '|'){
+                   containers.setText(txt+"|");
+                }
+            }
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
