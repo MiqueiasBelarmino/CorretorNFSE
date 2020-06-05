@@ -6,12 +6,13 @@
 package visao;
 
 import dao.NFSEDao;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import modelo.NFSE;
+import org.apache.log4j.Logger;
 import util.Tools;
 
 /**
@@ -20,30 +21,44 @@ import util.Tools;
  */
 public class ContainerNFSE extends javax.swing.JDialog {
 
+    private static final Logger log = Logger.getLogger(ContainerNFSE.class);
+    private static int empresa;
+    private static String usuario;
+    private static String modulo;
     /**
      * Creates new form Container
      */
     private NFSE nfse = null;
 
-    public ContainerNFSE(java.awt.Frame parent, boolean modal) {
+//    public ContainerNFSE(java.awt.Frame parent, boolean modal) {
+//        super(parent, modal);
+//        initComponents();
+//        limparRotulos();
+//        habilitarBotoes(false);
+//        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/img/logo.png")));
+//    }
+    public ContainerNFSE(java.awt.Frame parent, boolean modal, int empresa, String usuario, String modulo) {
         super(parent, modal);
         initComponents();
         limparRotulos();
         habilitarBotoes(false);
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/img/logo.png")));
+        ContainerNFSE.empresa = empresa;
+        ContainerNFSE.usuario = usuario;
+        ContainerNFSE.modulo = modulo;
+
+        comboEmpresa.setSelectedIndex(ContainerNFSE.empresa - 1);
+        if (modulo.equals("container")) {
+            this.setTitle("Corretor Oxetil - Alteração de Containers");
+            log.info("usuário \"" + ContainerNFSE.usuario + "\": acessou Corretor Oxetil - Alteração de Containers");
+            btnAlterar.setText("Alterar Containers");
+        } else if (modulo.equals("caixa")) {
+            this.setTitle("Corretor Oxetil - Alteração de Caixas de Papelão");
+            log.info("usuário \"" + ContainerNFSE.usuario + "\": acessou Corretor Oxetil - Alteração de Caixas de Papelão");
+            btnAlterar.setText("Alterar Caixas");
+        }
     }
 
-//    public ContainerNFSE(java.awt.Frame parent, boolean modal, int option) {
-//        super(parent, modal);
-//        initComponents();
-//        limparRotulos();
-//        if(option==0){
-//            this.setTitle("Corretor Oxetil - Alteração de Containers");
-//            btnAlterar.setText("Alterar Containers");
-//        }else if(option==1){
-//            this.setTitle("Corretor Oxetil - Alteração de Caixas de Papelão");
-//            btnAlterar.setText("Alterar Caixas de Papelão");
-//        }
-//    }
     private void limparRotulos() {
         lblCodigoCliente.setText("");
         lblEmpresa.setText("");
@@ -56,7 +71,6 @@ public class ContainerNFSE extends javax.swing.JDialog {
 
     private void habilitarBotoes(boolean status) {
         btnAlterar.setEnabled(status);
-        btnAlterarCaixas.setEnabled(status);
     }
 
     /**
@@ -91,10 +105,9 @@ public class ContainerNFSE extends javax.swing.JDialog {
         btnSair = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
-        btnAlterarCaixas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Corretor Oxetil - Containers");
+        setTitle("Corretor Oxetil - Containers e Caixas");
         setModal(true);
         setResizable(false);
 
@@ -297,8 +310,6 @@ public class ContainerNFSE extends javax.swing.JDialog {
             }
         });
 
-        btnAlterarCaixas.setText("Alterar Caixas");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -306,11 +317,9 @@ public class ContainerNFSE extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnAlterar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAlterarCaixas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnVoltar)
-                .addGap(79, 79, 79)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSair)
                 .addContainerGap())
         );
@@ -321,8 +330,7 @@ public class ContainerNFSE extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSair)
                     .addComponent(btnVoltar)
-                    .addComponent(btnAlterar)
-                    .addComponent(btnAlterarCaixas))
+                    .addComponent(btnAlterar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -371,6 +379,7 @@ public class ContainerNFSE extends javax.swing.JDialog {
         if (valor.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nº da Nota Interna obrigatório");
         } else {
+            log.info("usuário \"" + ContainerNFSE.usuario + "\": buscar nota");
             int interno = Integer.parseInt(valor);
             nfse = new NFSE();
             nfse = NFSEDao.localizar(interno, (comboEmpresa.getSelectedIndex() + 1));
@@ -398,22 +407,55 @@ public class ContainerNFSE extends javax.swing.JDialog {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        JTextField containers = new JTextField();
-        containers.setText("" + nfse.getContainers());
-        containers.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                containers.setEditable(Tools.numberInputVerifier(containers, e, "|"));
-            }
-        });
+        JTextField campo = new JTextField();
+        String aux = "";
+        if (ContainerNFSE.modulo.equals("container")) {
+            log.info("usuário \"" + ContainerNFSE.usuario + "\": alterar container");
+            campo.setText("" + nfse.getContainers());
+            aux = nfse.getContainers();
+            campo.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    campo.setEditable(Tools.numberInputVerifier(campo, e, "|"));
+                }
+            });
 
-        int option = JOptionPane.showConfirmDialog(null, containers, "Alteração", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            int lenght = containers.getText().trim().length();
-            String txt = containers.getText().trim();
-            if (lenght > 0) {
-                if(txt.charAt(lenght-1) != '|'){
-                   containers.setText(txt+"|");
+            int option = JOptionPane.showConfirmDialog(null, campo, "Alteração", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+
+                int lenght = campo.getText().trim().length();
+                String txt = campo.getText().trim();
+
+                if (lenght > 0) {
+                    if (txt.charAt(lenght - 1) != '|') {
+                        campo.setText(txt + "|");
+                        txt = txt + "|";
+                    }
+                    log.info("usuário \"" + ContainerNFSE.usuario + "\": coontainers alterados de \"" + aux + "\" para \"" + txt + "\"");
+                    nfse.setContainers(txt);
+                    NFSEDao.corrigirContainer(nfse);
+                }
+            }
+        } else if (ContainerNFSE.modulo.equals("caixa")) {
+            log.info("usuário \"" + ContainerNFSE.usuario + "\": alterar caixas de papelão");
+            campo.setText("" + nfse.getCaixaPapelaoQtd());
+            aux += nfse.getCaixaPapelaoQtd();
+            campo.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    campo.setEditable(Tools.numberInputVerifier(campo, e, null));
+                }
+            });
+
+            int option = JOptionPane.showConfirmDialog(null, campo, "Alteração", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+
+                String txt = campo.getText().trim();
+
+                if (txt != "") {
+                    log.info("usuário \"" + ContainerNFSE.usuario + "\": quantidade de caixas alteradas de \"" + aux + "\" para \"" + txt + "\"");
+                    nfse.setCaixaPapelaoQtd(Integer.parseInt(txt));
+                    NFSEDao.corrigirCaixaPapelao(nfse);
                 }
             }
         }
@@ -433,16 +475,24 @@ public class ContainerNFSE extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ContainerNFSE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContainerNFSE.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ContainerNFSE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContainerNFSE.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ContainerNFSE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContainerNFSE.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ContainerNFSE.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContainerNFSE.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -456,7 +506,7 @@ public class ContainerNFSE extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ContainerNFSE dialog = new ContainerNFSE(new javax.swing.JFrame(), true);
+                ContainerNFSE dialog = new ContainerNFSE(new javax.swing.JFrame(), true, 1 , "miqueiascosta","caixa");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -470,7 +520,6 @@ public class ContainerNFSE extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
-    private javax.swing.JButton btnAlterarCaixas;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnVoltar;

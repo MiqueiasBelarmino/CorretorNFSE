@@ -1,13 +1,11 @@
 package visao;
 
 import dao.NFSEDao;
-import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.NFSE;
 import util.Conexao;

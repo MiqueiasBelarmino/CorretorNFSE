@@ -158,4 +158,72 @@ public class NFSEDao {
             }
         }
     }
+
+    /**
+     * <p>
+     * Esse método efetua correção dos containers do pedido na nota</p>
+     *
+     * @param nfse instância de NFSE contendo todas as informações da nota
+     */
+    public static void corrigirContainer(NFSE nfse) {
+        Connection connection = Conexao.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeUpdate("Update NotasFiscais Set NF_Containers = '" + nfse.getContainers() + "' Where Emp_Codigo = " + nfse.getCodigoEmpresa() + " And NF_Numero  = '" + nfse.getNumeroInterno() + "' ");
+                connection.commit(); //This commits the transaction and starts a new one.
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                        Conexao.closeConnection();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Esse método efetua correção da quantidade de caixas de papelao do pedido
+     * na nota</p>
+     *
+     * @param nfse instância de NFSE contendo todas as informações da nota
+     */
+    public static void corrigirCaixaPapelao(NFSE nfse) {
+        Connection connection = Conexao.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeUpdate("Update NotasFiscais Set NF_QtdCaixasPapelao = " + nfse.getCaixaPapelaoQtd() + " Where Emp_Codigo = " + nfse.getCodigoEmpresa() + " And NF_Numero  = '" + nfse.getNumeroInterno() + "' ");
+                connection.commit(); //This commits the transaction and starts a new one.
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                        Conexao.closeConnection();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
